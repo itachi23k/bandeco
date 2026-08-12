@@ -54,7 +54,7 @@ export const AddWorkerModal: React.FC<AddWorkerModalProps> = ({ isOpen, onClose 
             </div>
             <div>
               <h2 className="text-base font-extrabold tracking-tight">CADASTRAR CONSUMIDOR</h2>
-              <p className="text-xs text-slate-400">Novo nome sincronizado com Firestore</p>
+              <p className="text-xs text-slate-400">Novo nome sincronizado</p>
             </div>
           </div>
 
@@ -100,7 +100,7 @@ export const AddWorkerModal: React.FC<AddWorkerModalProps> = ({ isOpen, onClose 
           </div>
 
           <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900">
-            ℹ️ O novo nome ficará imediatamente disponível na lista A-Z e será sincronizado com a coleção do Firestore.
+            ℹ️ O novo nome ficará imediatamente disponível na lista A-Z e será sincronizado.
           </div>
 
           <div className="pt-2 flex items-center justify-end gap-2">

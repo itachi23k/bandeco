@@ -26,7 +26,7 @@ export const OfflineBanner: React.FC<{ onOpenDrawer: () => void; onOpenAdmin: ()
             <div>
               <p className="font-extrabold">Atenção: Licença de Login Expirada ({userProfile?.validUntil})</p>
               <p className="text-red-100 text-xs">
-                Sua validade de acesso expirou no Firestore. Entre em contato com o administrador para renovar o uso.
+                Sua validade de acesso expirou. Entre em contato com o administrador para renovar o uso.
               </p>
             </div>
           </div>
@@ -66,7 +66,7 @@ export const OfflineBanner: React.FC<{ onOpenDrawer: () => void; onOpenAdmin: ()
           <div className="flex items-center gap-2">
             <CloudUpload className="w-4 h-4 text-emerald-400 shrink-0 animate-bounce" />
             <span>
-              Você tem <strong>{offlineDrafts} lista(s) offline</strong> pendentes para sincronizar com o Firestore.
+              Você tem <strong>{offlineDrafts} lista(s) offline</strong> pendentes para sincronizar.
             </span>
           </div>
 

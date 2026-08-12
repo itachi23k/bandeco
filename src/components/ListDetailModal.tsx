@@ -42,7 +42,7 @@ export const ListDetailModal: React.FC<ListDetailModalProps> = ({ list, onClose 
                 {isSynced ? (
                   <>
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Enviado ao Firestore</span>
+                    <span>Enviado ao Sistema</span>
                   </>
                 ) : (
                   <>
@@ -164,7 +164,7 @@ export const ListDetailModal: React.FC<ListDetailModalProps> = ({ list, onClose 
               ) : (
                 <>
                   <Clock className="w-4 h-4 text-amber-600" />
-                  <span>Sincronizando com Firestore...</span>
+                  <span>Sincronizando com o Banco de dados...</span>
                 </>
               )}
             </span>
@@ -180,7 +180,7 @@ export const ListDetailModal: React.FC<ListDetailModalProps> = ({ list, onClose 
             </button>
 
             <button
-              onClick={async () => await generateMealListPDF(mealList)}
+              onClick={async () => await generateMealListPDF(list)}
               className="flex-1 sm:flex-initial px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs rounded-xl shadow-2xs flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
               <FileText className="w-4 h-4 text-red-400" />

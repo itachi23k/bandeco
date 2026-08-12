@@ -33,7 +33,7 @@ function MainAppContent() {
         <div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin mb-4" />
         <h2 className="text-lg font-extrabold tracking-tight">Verificando Licença de Acesso...</h2>
         <p className="text-xs text-slate-400 mt-1 max-w-sm">
-          Consultando a coleção de usuários autorizados no servidor Firestore.
+          Consultando a coleção de usuários autorizados no servidor.
         </p>
       </div>
     );
@@ -56,7 +56,7 @@ function MainAppContent() {
               Aplicativo Indisponível
             </h1>
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto">
-              {licenseError || 'O acesso a este aplicativo exige que o usuário esteja logado com uma conta previamente autorizada e cadastrada na coleção Firestore do administrador.'}
+              {licenseError || 'O acesso a este aplicativo exige que o usuário esteja logado com uma conta previamente autorizada e cadastrada pelo administrador.'}
             </p>
           </div>
 
@@ -181,12 +181,12 @@ function MainAppContent() {
             <HardHat className="w-4 h-4 text-red-500" />
             <span>Controle de Marmitas Terraplanagem</span>
             <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded border border-slate-700">
-              A-Z • Firestore Auto-Sync
+              A-Z • Sincronização Automática
             </span>
           </div>
 
           <p className="text-slate-500 text-[11px] text-center sm:text-right">
-            Sincronização automática via Firestore com relatórios PDF enxutos e envio via WhatsApp.
+            Idealizado e Construído por Cassio Junio.
           </p>
         </div>
       </footer>

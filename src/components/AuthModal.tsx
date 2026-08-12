@@ -119,7 +119,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onOpenAdm
           /* Login Form ONLY */
           <div className="p-6 space-y-4">
             <div className="p-3 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 leading-relaxed font-medium">
-              🔒 O acesso ao aplicativo exige uma conta previamente cadastrada pelo administrador na coleção do Firestore.
+              🔒 O acesso ao aplicativo exige uma conta previamente cadastrada pelo administrador.
             </div>
 
             {(errorMsg || licenseError) && (

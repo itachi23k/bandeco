@@ -33,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
               <span className="font-extrabold tracking-tight text-base sm:text-lg text-slate-900 leading-tight">
-                MarmitaSync
+                Pedidos
               </span>
               <span className="bg-red-50 text-red-600 border border-red-100 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase hidden xs:inline-block">
                 Obra

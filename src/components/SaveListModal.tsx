@@ -62,7 +62,7 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
             </div>
             <div>
               <h2 className="text-base font-extrabold tracking-tight">GRAVAR LISTA DE REFEIÇÕES</h2>
-              <p className="text-xs text-slate-400">Gera histórico com suporte offline e Firestore</p>
+              <p className="text-xs text-slate-400">Gera histórico com suporte offline e Online</p>
             </div>
           </div>
 
@@ -89,7 +89,7 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
 
         {isExpired && (
           <div className="p-3 bg-red-100 text-red-900 border-b border-red-200 text-xs font-bold">
-            ⚠️ Sua licença de uso expirou. Entre em contato com o administrador para revalidar no Firestore.
+            ⚠️ Sua licença de uso expirou. Entre em contato com o administrador para revalidar.
           </div>
         )}
 

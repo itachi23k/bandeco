@@ -40,7 +40,7 @@ export const TotalHeroCounter: React.FC<TotalHeroCounterProps> = ({ onSaveClick,
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">
-              MARMITAS TERRAPLANAGEM
+              REFEIÇÕES TRECHO
             </h1>
             <p className="text-xs text-gray-500 mt-0.5">
               Selecione as quantidades abaixo na lista A-Z.

@@ -53,7 +53,7 @@ export const WorkersManagerModal: React.FC<WorkersManagerModalProps> = ({
             <div>
               <h2 className="text-base font-extrabold tracking-tight">GESTÃO DE CONSUMIDORES A-Z</h2>
               <p className="text-xs text-slate-400">
-                {workers.length} trabalhadores cadastrados no Firestore
+                {workers.length} trabalhadores cadastrados no Sistema
               </p>
             </div>
           </div>

@@ -47,7 +47,7 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
             <div>
               <h2 className="text-base font-extrabold tracking-tight">HISTÓRICO DE LISTAS</h2>
               <p className="text-xs text-slate-400">
-                Sincronização Automática no Firestore
+                Sincronização Automática
               </p>
             </div>
           </div>
@@ -140,7 +140,7 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
                       </button>
 
                       <button
-                        onClick={async () => await generateMealListPDF(mealList)}
+                        onClick={async () => await generateMealListPDF(list)}
                         className="px-2.5 py-1.5 bg-slate-100 text-slate-800 hover:bg-slate-200 rounded-lg font-semibold flex items-center gap-1 transition-all cursor-pointer text-xs"
                         title="Baixar Relatório PDF"
                       >

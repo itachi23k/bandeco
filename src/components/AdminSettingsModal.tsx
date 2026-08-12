@@ -67,7 +67,7 @@ export const AdminSettingsModal: React.FC<AdminSettingsModalProps> = ({ isOpen, 
             </div>
             <div>
               <h2 className="text-base font-extrabold tracking-tight">PAINEL ADMINISTRATIVO</h2>
-              <p className="text-xs text-slate-400">Ajuste de Validade de Acesso no Firestore</p>
+              <p className="text-xs text-slate-400">Ajuste de Validade de Acesso</p>
             </div>
           </div>
 
@@ -99,7 +99,7 @@ export const AdminSettingsModal: React.FC<AdminSettingsModalProps> = ({ isOpen, 
             <p className="text-xs text-slate-500">{userProfile?.email}</p>
 
             <div className="pt-2 border-t border-slate-200/80 flex items-center justify-between text-xs">
-              <span className="text-slate-500 font-medium">Validade Firestore:</span>
+              <span className="text-slate-500 font-medium">Validade:</span>
               <span className="font-extrabold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
                 {userProfile?.validUntil || selectedDate}
               </span>
@@ -181,7 +181,7 @@ export const AdminSettingsModal: React.FC<AdminSettingsModalProps> = ({ isOpen, 
               Regra de Licenciamento em Tempo Real
             </p>
             <p className="text-amber-800/90 text-[11px] leading-relaxed">
-              As alterações na validade são propagadas em tempo real via listener do Firestore (`users/{'{uid}'}`). Se a data for anterior à data atual, o sistema bloqueia novas gravações até que a validade seja renovada.
+              As alterações na validade são propagadas em tempo real (`users/{'{uid}'}`). Se a data for anterior à data atual, o sistema bloqueia novas gravações até que a validade seja renovada.
             </p>
           </div>
         </div>

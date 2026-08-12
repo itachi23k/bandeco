@@ -112,7 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           } else {
             setUserProfile(null);
             setIsAuthorized(false);
-            setLicenseError('Não foi possível verificar a licença no servidor Firestore. Conecte-se à internet para validar seu acesso.');
+            setLicenseError('Não foi possível verificar a licença no servidor. Conecte-se à internet para validar seu acesso.');
           }
           setLoading(false);
         });

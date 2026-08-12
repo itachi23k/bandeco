@@ -5,7 +5,7 @@ export const shareMealListWhatsApp = (mealList: MealList) => {
     .filter(item => item.quantity > 0)
     .sort((a, b) => a.workerName.localeCompare(b.workerName, 'pt-BR'));
 
-  let text = `*📋 CONTROLE DE MARMITAS - TERRAPLANAGEM*\n`;
+  let text = `*📋 CONTROLE DE REFEIÇÕES - TRECHO*\n`;
   text += `-----------------------------------\n`;
   text += `📌 *${mealList.title}*\n`;
   text += `📅 *Data:* ${mealList.date} | ⏰ *Turno:* ${mealList.shift}\n`;
@@ -13,7 +13,7 @@ export const shareMealListWhatsApp = (mealList: MealList) => {
     text += `🚜 *Frente / Local:* ${mealList.worksiteLocation}\n`;
   }
   text += `👤 *Responsável:* ${mealList.createdByName}\n`;
-  text += `☁️ *Status Sync:* ${mealList.status === 'sent' ? '✅ Firestore Sincronizado' : '🔒 Salvo Offline'}\n\n`;
+  text += `☁️ *Status Sync:* ${mealList.status === 'sent' ? '✅ Sincronizado' : '🔒 Salvo Offline'}\n\n`;
 
   text += `🍱 *TOTAL DE MARMITAS: ${mealList.totalMarmitas}*\n`;
   text += `-----------------------------------\n`;
