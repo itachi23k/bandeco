@@ -1,0 +1,6 @@
+{
+  "name": "Controle de Marmitas Terraplanagem",
+  "description": "Gerador e gestor de listas de refeições para obras de terraplanagem com controle de consumo A-Z, sincronização em tempo real, suporte offline e relatórios PDF.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

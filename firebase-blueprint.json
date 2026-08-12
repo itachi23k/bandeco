@@ -1,0 +1,49 @@
+{
+  "entities": {
+    "users": {
+      "title": "User Profile",
+      "description": "App users with roles and validity expiration dates",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string" },
+        "validUntil": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "workers": {
+      "title": "Registered Worker",
+      "description": "Pre-registered workers for earthwork team meal list",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "sector": { "type": "string" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "meal_lists": {
+      "title": "Meal List",
+      "description": "List of meal requests per worker with counts and sync status",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "shift": { "type": "string" },
+        "totalMarmitas": { "type": "number" },
+        "items": { "type": "array" },
+        "notes": { "type": "string" },
+        "createdByName": { "type": "string" },
+        "createdByUid": { "type": "string" },
+        "status": { "type": "string" },
+        "syncedAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "date", "totalMarmitas", "items"]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+import { Worker } from '../types';
+
+export const INITIAL_WORKERS: Worker[] = [
+  { id: 'w-01', name: 'Adriano Silva', sector: 'Operadores', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-02', name: 'Alan Oliveira', sector: 'Motoristas', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-03', name: 'Antonio Carlos', sector: 'Operadores', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-04', name: 'Bruno Ferreira', sector: 'Ajudantes', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-05', name: 'Carlos Eduardo', sector: 'Motoristas', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-06', name: 'Claudio Santos', sector: 'Operadores', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-07', name: 'Daniel Costa', sector: 'Manutenção', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-08', name: 'Diego Martins', sector: 'Operadores', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-09', name: 'Edson Pereira', sector: 'Motoristas', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-10', name: 'Elias Rodrigues', sector: 'Ajudantes', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-11', name: 'Fabio Souza', sector: 'Engenharia / Encarregados', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-12', name: 'Gabriel Lima', sector: 'Operadores', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-13', name: 'Gilberto Alves', sector: 'Motoristas', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-14', name: 'Heitor Gomez', sector: 'Manutenção', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-15', name: 'Italo Ribeiro', sector: 'Ajudantes', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-16', name: 'Joao Paulo', sector: 'Operadores', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-17', name: 'Jose Roberto', sector: 'Motoristas', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-18', name: 'Lucas Mendes', sector: 'Engenharia / Encarregados', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-19', name: 'Marcelo Barbosa', sector: 'Operadores', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-20', name: 'Nivaldo Rocha', sector: 'Motoristas', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-21', name: 'Paulo Henrique', sector: 'Ajudantes', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-22', name: 'Rafael Cardoso', sector: 'Manutenção', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-23', name: 'Samuel Dias', sector: 'Operadores', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-24', name: 'Thiago Nogueira', sector: 'Motoristas', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-25', name: 'Valdir Ramos', sector: 'Ajudantes', active: true, createdAt: '2026-08-01T08:00:00.000Z' },
+  { id: 'w-26', name: 'Wellington Castro', sector: 'Engenharia / Encarregados', active: true, createdAt: '2026-08-01T08:00:00.000Z' }
+];
