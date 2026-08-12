@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   X, 
   FileText, 
@@ -26,7 +26,7 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
   onSelectMealList
 }) => {
   const { 
-    mealLists, 
+    mealLists,  // ← Já vem filtrado do MealContext
     deleteMealList
   } = useMeal();
 
@@ -47,7 +47,7 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
             <div>
               <h2 className="text-base font-extrabold tracking-tight">HISTÓRICO DE LISTAS</h2>
               <p className="text-xs text-slate-400">
-                Sincronização Automática
+                Suas listas de refeições
               </p>
             </div>
           </div>
@@ -189,4 +189,3 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
     </div>
   );
 };
-

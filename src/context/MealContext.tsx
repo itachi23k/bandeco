@@ -28,6 +28,7 @@ interface MealContextType {
   resetAllQuantities: () => void;
   setAllQuantitiesToOne: () => void;
   setSectorQuantitiesToOne: (sectorName: string) => void;
+  repeatLastMealListSelections: () => void;
   
   // Worker Management
   addWorker: (name: string, sector: string) => Promise<void>;
@@ -74,8 +75,8 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Current meal counters (WorkerName -> Quantity)
   const [currentQuantities, setCurrentQuantities] = useState<Record<string, number>>({});
 
-  // History of Meal Lists
-  const [mealLists, setMealLists] = useState<MealList[]>(() => {
+  // History of Meal Lists (TODAS as listas, sem filtro)
+  const [allMealLists, setAllMealLists] = useState<MealList[]>(() => {
     const saved = localStorage.getItem(LOCAL_LISTS_KEY);
     if (saved) {
       try {
@@ -106,10 +107,10 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem(LOCAL_WORKERS_KEY, JSON.stringify(workers));
   }, [workers]);
 
-  // Save meal lists to LocalStorage
+  // Save ALL meal lists to LocalStorage
   useEffect(() => {
-    localStorage.setItem(LOCAL_LISTS_KEY, JSON.stringify(mealLists));
-  }, [mealLists]);
+    localStorage.setItem(LOCAL_LISTS_KEY, JSON.stringify(allMealLists));
+  }, [allMealLists]);
 
   // Real-time Firestore sync for Workers collection
   useEffect(() => {
@@ -159,7 +160,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
           remoteLists.push({ id: docSnap.id, ...docSnap.data() } as MealList);
         });
 
-        setMealLists((localLists) => {
+        setAllMealLists((localLists) => {
           const listMap = new Map<string, MealList>();
           localLists.forEach(l => listMap.set(l.id, l));
           remoteLists.forEach(r => {
@@ -180,13 +181,19 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Auto-sync offline lists automatically whenever user is online and logged in
   useEffect(() => {
     if (isOnline && currentUser) {
-      const hasPending = mealLists.some(l => l.status === 'draft');
+      const hasPending = allMealLists.some(l => l.status === 'draft' && l.createdByUid === currentUser.uid);
       if (hasPending) {
         syncAllOfflineLists();
       }
     }
-  }, [isOnline, currentUser, mealLists]);
+  }, [isOnline, currentUser, allMealLists]);
 
+  // ✅ FILTRO OFFLINE: Apenas listas do usuário atual
+  const mealLists = allMealLists.filter(list => 
+    list.createdByUid === currentUser?.uid || 
+    list.createdByUid === 'anonymous' ||
+    !list.createdByUid // para listas antigas sem uid
+  );
 
   // Calculate Total Marmitas
   const totalMarmitas = Object.values(currentQuantities).reduce((acc: number, qty: number) => acc + (qty || 0), 0);
@@ -242,6 +249,30 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+  // ✅ FUNÇÃO REPETIR ÚLTIMO (filtrada por usuário)
+  const repeatLastMealListSelections = () => {
+    if (mealLists.length === 0) {
+      alert('Nenhum relatório anterior encontrado para este usuário.');
+      return;
+    }
+    
+    const lastList = mealLists.find(l => l.createdByUid === currentUser?.uid) || mealLists[0];
+    
+    if (!lastList || !lastList.items || lastList.items.length === 0) {
+      alert('O último relatório não possui itens para repetir.');
+      return;
+    }
+
+    const nextQuantities: Record<string, number> = {};
+    lastList.items.forEach(item => {
+      if (item.quantity > 0) {
+        nextQuantities[item.workerName] = item.quantity;
+      }
+    });
+
+    setCurrentQuantities(nextQuantities);
+  };
+
   // Add Worker
   const addWorker = async (name: string, sector: string) => {
     const trimmedName = name.trim();
@@ -255,14 +286,12 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
       createdAt: new Date().toISOString()
     };
 
-    // Update local state immediately
     setWorkers((prev) => {
       const exists = prev.some(w => w.name.toLowerCase() === trimmedName.toLowerCase());
       if (exists) return prev;
       return [...prev, newWorker].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
     });
 
-    // Attempt Firestore sync
     if (currentUser) {
       try {
         const workerRef = doc(db, 'workers', newWorker.id);
@@ -309,7 +338,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Save Meal List
+  // ✅ Save Meal List – NÃO BLOQUEANTE
   const saveMealList = async (
     title: string,
     date: string,
@@ -343,32 +372,37 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
       notes,
       createdByName: userProfile?.displayName || 'Operador de Campo',
       createdByUid: currentUser?.uid || 'anonymous',
-      status: 'draft', // default to draft, updated to 'sent' if firestore sync succeeds
+      status: 'draft', // Sempre começa como draft
       createdAt: new Date().toISOString()
     };
 
-    // Save locally
-    setMealLists(prev => [newList, ...prev]);
+    // 1. Salvar localmente IMEDIATAMENTE
+    setAllMealLists(prev => [newList, ...prev]);
 
-    // Attempt Firestore Sync
+    // 2. Tentar sincronizar em segundo plano (não aguardar)
     if (currentUser && isOnline) {
-      try {
-        setSyncing(true);
-        const listRef = doc(db, 'meal_lists', newList.id);
-        const firestoreData = { ...newList, status: 'sent', syncedAt: new Date().toISOString() };
-        await setDoc(listRef, firestoreData);
-        
-        // Mark as sent locally
-        newList.status = 'sent';
-        newList.syncedAt = new Date().toISOString();
-        setMealLists(prev => prev.map(l => l.id === newList.id ? { ...newList } : l));
-      } catch (err) {
-        console.warn('List saved offline (Firestore sync deferred):', err);
-      } finally {
-        setSyncing(false);
-      }
+      // Fire-and-forget: não bloqueia a UI
+      (async () => {
+        try {
+          setSyncing(true);
+          const listRef = doc(db, 'meal_lists', newList.id);
+          const firestoreData = { ...newList, status: 'sent', syncedAt: new Date().toISOString() };
+          await setDoc(listRef, firestoreData);
+
+          // Atualizar status local para 'sent' após sucesso
+          setAllMealLists(prev => 
+            prev.map(l => l.id === newList.id ? { ...newList, status: 'sent' } : l)
+          );
+        } catch (err) {
+          console.warn('List saved offline (Firestore sync deferred):', err);
+          // Mantém status 'draft' – será sincronizada depois pela função syncAllOfflineLists
+        } finally {
+          setSyncing(false);
+        }
+      })().catch(err => console.error('Erro no sync em background:', err));
     }
 
+    // 3. Retorna imediatamente para o modal fechar
     return newList;
   };
 
@@ -385,7 +419,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
       await setDoc(listRef, updatedList);
 
-      setMealLists(prev => prev.map(l => l.id === list.id ? updatedList : l));
+      setAllMealLists(prev => prev.map(l => l.id === list.id ? updatedList : l));
       return true;
     } catch (err) {
       console.error('Failed to sync list to Firestore:', err);
@@ -399,7 +433,8 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const syncAllOfflineLists = async (): Promise<number> => {
     if (!currentUser || !isOnline) return 0;
 
-    const pendingLists = mealLists.filter(l => l.status === 'draft');
+    // Filtra apenas os rascunhos do usuário atual
+    const pendingLists = allMealLists.filter(l => l.status === 'draft' && l.createdByUid === currentUser.uid);
     if (pendingLists.length === 0) return 0;
 
     setSyncing(true);
@@ -415,8 +450,8 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       await batch.commit();
 
-      setMealLists(prev => prev.map(l => {
-        if (l.status === 'draft') {
+      setAllMealLists(prev => prev.map(l => {
+        if (l.status === 'draft' && l.createdByUid === currentUser.uid) {
           return { ...l, status: 'sent', syncedAt: new Date().toISOString() };
         }
         return l;
@@ -432,7 +467,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const deleteMealList = async (id: string) => {
-    setMealLists(prev => prev.filter(l => l.id !== id));
+    setAllMealLists(prev => prev.filter(l => l.id !== id));
     if (currentUser) {
       try {
         const listRef = doc(db, 'meal_lists', id);
@@ -444,7 +479,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const importMealLists = (imported: MealList[]) => {
-    setMealLists(prev => {
+    setAllMealLists(prev => {
       const existingIds = new Set(prev.map(l => l.id));
       const newItems = imported.filter(l => !existingIds.has(l.id));
       return [...newItems, ...prev];
@@ -456,7 +491,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         workers,
         currentQuantities,
-        mealLists,
+        mealLists, // ← JÁ FILTRADO por usuário
         totalMarmitas,
         isOnline,
         syncing,
@@ -466,6 +501,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
         resetAllQuantities,
         setAllQuantitiesToOne,
         setSectorQuantitiesToOne,
+        repeatLastMealListSelections,
 
         addWorker,
         updateWorker,

@@ -30,21 +30,32 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (totalMarmitas === 0) return;
-    setIsSubmitting(true);
+  e.preventDefault();
+  if (totalMarmitas === 0) return;
 
-    try {
-      await saveMealList(title, date, shift, location, notes);
-      resetAllQuantities();
-      onSavedSuccess();
-      onClose();
-    } catch (err) {
-      alert('Erro ao salvar lista: ' + (err as Error).message);
-    } finally {
-      setIsSubmitting(false);
+  setIsSubmitting(true);
+
+  try {
+    // Salva localmente e dispara sincronização em background
+    const savedList = await saveMealList(title, date, shift, location, notes);
+    
+    // Limpa as quantidades
+    resetAllQuantities();
+    
+    // Fecha o modal e abre o histórico
+    onSavedSuccess();
+    onClose();
+    
+    // Se estiver offline, mostra aviso rápido
+    if (!navigator.onLine) {
+      alert('Lista salva offline! Será sincronizada quando houver conexão.');
     }
-  };
+  } catch (err) {
+    alert('Erro ao salvar lista: ' + (err as Error).message);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const itemsCount = Object.keys(currentQuantities).length;
 

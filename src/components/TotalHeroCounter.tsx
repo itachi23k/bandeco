@@ -1,5 +1,5 @@
 import React from 'react';
-import { Utensils, RotateCcw, CheckCheck, Users, HardHat } from 'lucide-react';
+import { Utensils, RotateCcw, CheckCheck, Users, HardHat, Repeat } from 'lucide-react';
 import { useMeal } from '../context/MealContext';
 
 interface TotalHeroCounterProps {
@@ -13,6 +13,7 @@ export const TotalHeroCounter: React.FC<TotalHeroCounterProps> = ({ onSaveClick,
     resetAllQuantities, 
     setAllQuantitiesToOne, 
     setSectorQuantitiesToOne,
+    repeatLastMealListSelections,
     currentQuantities 
   } = useMeal();
 
@@ -68,6 +69,15 @@ export const TotalHeroCounter: React.FC<TotalHeroCounterProps> = ({ onSaveClick,
             >
               <HardHat className="w-3.5 h-3.5 text-slate-500" />
               <span>Op. 1x</span>
+            </button>
+
+            <button
+              onClick={repeatLastMealListSelections}
+              className="px-2.5 py-1.5 bg-white hover:bg-gray-100 text-slate-700 rounded-lg text-xs font-bold border border-gray-200 transition-all cursor-pointer flex items-center gap-1"
+              title="Repetir seleções do último relatório"
+            >
+              <Repeat className="w-3.5 h-3.5 text-slate-500" />
+              <span>Repetir Último</span>
             </button>
 
             {totalMarmitas > 0 && (
