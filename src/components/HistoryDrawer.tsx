@@ -7,7 +7,8 @@ import {
   CheckCircle2, 
   Clock, 
   Eye, 
-  FolderOpen
+  FolderOpen,
+  Store
 } from 'lucide-react';
 import { useMeal } from '../context/MealContext';
 import { MealList } from '../types';
@@ -26,7 +27,11 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
   onSelectMealList
 }) => {
   const { 
+<<<<<<< Updated upstream
     mealLists,  // ← Já vem filtrado do MealContext
+=======
+    mealLists,
+>>>>>>> Stashed changes
     deleteMealList
   } = useMeal();
 
@@ -118,6 +123,12 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
                       <p className="text-xs text-slate-500 mt-0.5">
                         {list.date} • Resp: {list.createdByName}
                       </p>
+                      {list.restaurant && (
+                        <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                          <Store className="w-3 h-3 text-slate-400" />
+                          {list.restaurant}
+                        </p>
+                      )}
                     </div>
 
                     {/* Total Marmitas Badge */}

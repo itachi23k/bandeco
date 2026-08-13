@@ -12,6 +12,9 @@ export const shareMealListWhatsApp = (mealList: MealList) => {
   if (mealList.worksiteLocation) {
     text += `🚜 *Frente / Local:* ${mealList.worksiteLocation}\n`;
   }
+  if (mealList.restaurant) {
+    text += `🍽️ *Restaurante:* ${mealList.restaurant}\n`;
+  }
   text += `👤 *Responsável:* ${mealList.createdByName}\n`;
   text += `☁️ *Status Sync:* ${mealList.status === 'sent' ? '✅ Sincronizado' : '🔒 Salvo Offline'}\n\n`;
 

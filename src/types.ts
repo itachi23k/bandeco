@@ -1,7 +1,7 @@
 export interface Worker {
   id: string;
   name: string;
-  sector: string; // e.g. "Operadores de Máquina", "Motoristas de Caçamba", "Ajudantes Geral", "Mecânica/Manutenção", "Engenharia/Geral"
+  sector: string;
   active: boolean;
   createdAt: string;
   updatedAt?: string;
@@ -11,7 +11,7 @@ export interface MealItem {
   workerId?: string;
   workerName: string;
   sector?: string;
-  quantity: number; // usually 1, but can be higher if extra meals are picked up
+  quantity: number;
   notes?: string;
 }
 
@@ -20,13 +20,14 @@ export interface MealList {
   title: string;
   date: string; // YYYY-MM-DD
   shift: 'Almoço' | 'Janta' | 'Lanche' | 'Ceia / Noturno';
-  worksiteLocation?: string; // e.g., "Frente de Lavra 02", "Canteiro Central"
+  worksiteLocation?: string;
+  restaurant?: string; // ✅ Novo campo
   totalMarmitas: number;
   items: MealItem[];
   notes?: string;
   createdByName: string;
   createdByUid: string;
-  status: 'sent' | 'draft'; // 'sent' = synchronized with Firestore (green), 'draft' = offline only (gray)
+  status: 'sent' | 'draft';
   syncedAt?: string;
   createdAt: string;
   updatedAt?: string;
@@ -37,7 +38,7 @@ export interface UserProfile {
   email: string;
   displayName: string;
   role: 'admin' | 'operator';
-  validUntil: string; // ISO date string YYYY-MM-DD or ISO timestamp
+  validUntil: string;
   createdAt: string;
 }
 

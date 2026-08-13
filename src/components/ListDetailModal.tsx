@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, FileText, MessageSquare, Download, CloudUpload, CheckCircle2, Clock, Calendar, Clock3, MapPin, User, HardHat, Utensils } from 'lucide-react';
+import { X, FileText, MessageSquare, Download, CloudUpload, CheckCircle2, Clock, Calendar, MapPin, User, HardHat, Utensils, Store } from 'lucide-react';
 import { MealList } from '../types';
 import { generateMealListPDF } from '../utils/pdfGenerator';
 import { shareMealListWhatsApp } from '../utils/whatsappShare';
@@ -60,6 +60,11 @@ export const ListDetailModal: React.FC<ListDetailModalProps> = ({ list, onClose 
             <h2 className="text-xl font-extrabold text-white tracking-tight">
               {list.title}
             </h2>
+            {list.restaurant && (
+              <p className="text-sm text-slate-300 mt-1 flex items-center gap-1">
+                <Store className="w-3.5 h-3.5" /> {list.restaurant}
+              </p>
+            )}
           </div>
 
           <button
@@ -89,20 +94,26 @@ export const ListDetailModal: React.FC<ListDetailModalProps> = ({ list, onClose 
           </div>
 
           <div className="flex items-center gap-2">
+            <Store className="w-4 h-4 text-amber-600 shrink-0" />
+            <div>
+              <p className="text-slate-400 font-medium">Restaurante</p>
+              <p className="font-bold text-slate-800 truncate">{list.restaurant || 'Não informado'}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
             <User className="w-4 h-4 text-amber-600 shrink-0" />
             <div>
               <p className="text-slate-400 font-medium">Responsável</p>
               <p className="font-bold text-slate-800 truncate">{list.createdByName}</p>
             </div>
           </div>
+        </div>
 
-          <div className="flex items-center gap-2">
-            <Utensils className="w-4 h-4 text-amber-600 shrink-0" />
-            <div>
-              <p className="text-slate-400 font-medium">Total Marmitas</p>
-              <p className="font-extrabold text-amber-600 text-base font-serif">{list.totalMarmitas}</p>
-            </div>
-          </div>
+        {/* Total */}
+        <div className="px-5 py-2 bg-amber-50 border-b border-amber-200 flex items-center justify-between">
+          <span className="text-xs font-bold text-amber-800">Total de Marmitas</span>
+          <span className="text-lg font-serif font-extrabold text-amber-600">{list.totalMarmitas}</span>
         </div>
 
         {/* Workers Consuming List (A-Z Table) */}

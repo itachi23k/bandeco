@@ -37,7 +37,13 @@ export const generateMealListPDF = async (list: MealList) => {
   if (list.worksiteLocation) {
     doc.text(`Local / Frente: ${list.worksiteLocation}`, 80, startY + 11);
   }
-  doc.text(`Responsável: ${list.createdByName}`, 80, startY + 17);
+  if (list.restaurant) {
+    doc.text(`Restaurante: ${list.restaurant}`, 80, startY + 17);
+  }
+  doc.text(`Responsável: ${list.createdByName}`, 14, startY + 23);
+  if (list.worksiteLocation && !list.restaurant) {
+    doc.text(`Responsável: ${list.createdByName}`, 80, startY + 17);
+  }
 
   doc.setDrawColor(0, 0, 0);
   doc.setLineWidth(0.4);
@@ -127,7 +133,6 @@ export const generateMealListPDF = async (list: MealList) => {
     doc.text(`Página ${i} de ${pageCount}`, pageWidth - 14, doc.internal.pageSize.getHeight() - 6, { align: 'right' });
   }
 
-  // SALVAR E COMPARTILHAR
   const filename = `Marmitas_${list.date}_${list.shift.replace(/[^a-zA-Z0-9]/g, '')}.pdf`;
 
   try {

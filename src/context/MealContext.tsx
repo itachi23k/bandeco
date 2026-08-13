@@ -41,7 +41,8 @@ interface MealContextType {
     date: string, 
     shift: 'Almoço' | 'Janta' | 'Lanche' | 'Ceia / Noturno', 
     worksiteLocation?: string, 
-    notes?: string
+    notes?: string,
+    restaurant?: string  // ✅ Novo parâmetro
   ) => Promise<MealList>;
   syncListToFirestore: (list: MealList) => Promise<boolean>;
   deleteMealList: (id: string) => Promise<void>;
@@ -344,7 +345,8 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     date: string,
     shift: 'Almoço' | 'Janta' | 'Lanche' | 'Ceia / Noturno',
     worksiteLocation?: string,
-    notes?: string
+    notes?: string,
+    restaurant?: string // ✅ Novo parâmetro
   ): Promise<MealList> => {
     const items: MealItem[] = (Object.entries(currentQuantities) as [string, number][])
       .filter(([, qty]) => qty > 0)
@@ -367,12 +369,17 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
       date: date || new Date().toISOString().slice(0, 10),
       shift: shift || 'Almoço',
       worksiteLocation: worksiteLocation || 'Canteiro Principal',
+      restaurant: restaurant || '', // ✅ Salva o restaurante (string vazia se não informado)
       totalMarmitas: listTotal,
       items,
       notes,
       createdByName: userProfile?.displayName || 'Operador de Campo',
       createdByUid: currentUser?.uid || 'anonymous',
+<<<<<<< Updated upstream
       status: 'draft', // Sempre começa como draft
+=======
+      status: 'draft',
+>>>>>>> Stashed changes
       createdAt: new Date().toISOString()
     };
 
@@ -381,7 +388,10 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // 2. Tentar sincronizar em segundo plano (não aguardar)
     if (currentUser && isOnline) {
+<<<<<<< Updated upstream
       // Fire-and-forget: não bloqueia a UI
+=======
+>>>>>>> Stashed changes
       (async () => {
         try {
           setSyncing(true);
@@ -389,13 +399,19 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const firestoreData = { ...newList, status: 'sent', syncedAt: new Date().toISOString() };
           await setDoc(listRef, firestoreData);
 
+<<<<<<< Updated upstream
           // Atualizar status local para 'sent' após sucesso
+=======
+>>>>>>> Stashed changes
           setAllMealLists(prev => 
             prev.map(l => l.id === newList.id ? { ...newList, status: 'sent' } : l)
           );
         } catch (err) {
           console.warn('List saved offline (Firestore sync deferred):', err);
+<<<<<<< Updated upstream
           // Mantém status 'draft' – será sincronizada depois pela função syncAllOfflineLists
+=======
+>>>>>>> Stashed changes
         } finally {
           setSyncing(false);
         }
@@ -433,7 +449,10 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const syncAllOfflineLists = async (): Promise<number> => {
     if (!currentUser || !isOnline) return 0;
 
+<<<<<<< Updated upstream
     // Filtra apenas os rascunhos do usuário atual
+=======
+>>>>>>> Stashed changes
     const pendingLists = allMealLists.filter(l => l.status === 'draft' && l.createdByUid === currentUser.uid);
     if (pendingLists.length === 0) return 0;
 

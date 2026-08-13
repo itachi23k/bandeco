@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Utensils, Calendar, Clock, MapPin, FileText, CheckCircle2 } from 'lucide-react';
+import { X, Utensils, Calendar, Clock, MapPin, FileText, CheckCircle2, Store } from 'lucide-react';
 import { useMeal } from '../context/MealContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -19,6 +19,7 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
   const [date, setDate] = useState(todayStr);
   const [shift, setShift] = useState<'Almoço' | 'Janta' | 'Lanche' | 'Ceia / Noturno'>('Almoço');
   const [location, setLocation] = useState('Frente de Lavra 01');
+  const [restaurant, setRestaurant] = useState(''); // ✅ Novo estado
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,6 +31,7 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+<<<<<<< Updated upstream
   e.preventDefault();
   if (totalMarmitas === 0) return;
 
@@ -49,6 +51,26 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
     // Se estiver offline, mostra aviso rápido
     if (!navigator.onLine) {
       alert('Lista salva offline! Será sincronizada quando houver conexão.');
+=======
+    e.preventDefault();
+    if (totalMarmitas === 0) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // ✅ Passa o restaurante como argumento
+      await saveMealList(title, date, shift, location, notes, restaurant);
+      resetAllQuantities();
+      onSavedSuccess();
+      onClose();
+      if (!navigator.onLine) {
+        alert('Lista salva offline! Será sincronizada quando houver conexão.');
+      }
+    } catch (err) {
+      alert('Erro ao salvar lista: ' + (err as Error).message);
+    } finally {
+      setIsSubmitting(false);
+>>>>>>> Stashed changes
     }
   } catch (err) {
     alert('Erro ao salvar lista: ' + (err as Error).message);
@@ -144,28 +166,24 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
             />
           </div>
 
+          {/* Restaurant + Location */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* Date */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                Data
+                Restaurante / Fornecedor
               </label>
               <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Store className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
-                  type="date"
-                  required
-                  value={date}
-                  onChange={(e) => {
-                    setDate(e.target.value);
-                    setTitle(`${shift} Terraplanagem - ${e.target.value}`);
-                  }}
+                  type="text"
+                  value={restaurant}
+                  onChange={(e) => setRestaurant(e.target.value)}
                   className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  placeholder="Ex: Marmitaria do Zé"
                 />
               </div>
             </div>
 
-            {/* Location */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                 Frente / Canteiro
@@ -180,6 +198,26 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
                   placeholder="Ex: Canteiro Central"
                 />
               </div>
+            </div>
+          </div>
+
+          {/* Date */}
+          <div>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Data
+            </label>
+            <div className="relative">
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="date"
+                required
+                value={date}
+                onChange={(e) => {
+                  setDate(e.target.value);
+                  setTitle(`${shift} Terraplanagem - ${e.target.value}`);
+                }}
+                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              />
             </div>
           </div>
 
