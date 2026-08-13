@@ -42,4 +42,18 @@ export interface UserProfile {
   createdAt: string;
 }
 
-export type SectorFilter = 'TODOS' | 'Operadores' | 'Motoristas' | 'Ajudantes' | 'Manutenção' | 'Engenharia / Encarregados';
+export type SectorFilter = 
+  | 'TODOS'
+  | 'Operadores'
+  | 'Motoristas'
+  | 'Ajudantes'
+  | 'Manutenção'
+  | 'Engenharia'
+  | 'Encarregados'
+  | 'Apontadores'
+  | 'Abastecimento'
+  | 'Administração'
+  | 'Cozinha'
+  | 'Segurança do Trabalho'
+  | 'Laboratório'
+  | 'Topografia';

@@ -12,7 +12,15 @@ const SECTOR_OPTIONS = [
   'Motoristas',
   'Ajudantes',
   'Manutenção',
-  'Engenharia / Encarregados'
+  'Engenharia',
+  'Encarregados',
+  'Apontadores',
+  'Abastecimento',
+  'Administração',
+  'Cozinha',
+  'Segurança do Trabalho',
+  'Laboratório',
+  'Topografia'
 ];
 
 export const AddWorkerModal: React.FC<AddWorkerModalProps> = ({ isOpen, onClose }) => {

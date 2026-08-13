@@ -14,7 +14,15 @@ const SECTORS: SectorFilter[] = [
   'Motoristas',
   'Ajudantes',
   'Manutenção',
-  'Engenharia / Encarregados'
+  'Engenharia',
+  'Encarregados',
+  'Apontadores',
+  'Abastecimento',
+  'Administração',
+  'Cozinha',
+  'Segurança do Trabalho',
+  'Laboratório',
+  'Topografia'
 ];
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');

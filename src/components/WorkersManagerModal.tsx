@@ -115,7 +115,15 @@ export const WorkersManagerModal: React.FC<WorkersManagerModalProps> = ({
                       <option value="Motoristas">Motoristas</option>
                       <option value="Ajudantes">Ajudantes</option>
                       <option value="Manutenção">Manutenção</option>
-                      <option value="Engenharia / Encarregados">Engenharia</option>
+                      <option value="Engenharia">Engenharia</option>
+                      <option value="Encarregados">Encarregados</option>
+                      <option value="Apontadores">Apontadores</option>
+                      <option value="Abastecimento">Abastecimento</option>
+                      <option value="Administração">Administração</option>
+                      <option value="Cozinha">Cozinha</option>
+                      <option value="Segurança do Trabalho">Segurança do Trabalho</option>
+                      <option value="Laboratório">Laboratório</option>
+                      <option value="Topografia">Topografia</option>
                     </select>
                     <button
                       onClick={() => saveEdit(w.id)}
