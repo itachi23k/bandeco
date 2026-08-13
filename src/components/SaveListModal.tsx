@@ -9,6 +9,13 @@ interface SaveListModalProps {
   onSavedSuccess: () => void;
 }
 
+// 🔧 Defina aqui os dois restaurantes pré-definidos
+const PRESET_RESTAURANTS = [
+  'Jacaretinga - Raquel',
+  'Canteiro Igapó',
+  'Canteiro Tupana'
+];
+
 export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, onSavedSuccess }) => {
   const { totalMarmitas, saveMealList, resetAllQuantities, currentQuantities } = useMeal();
   const { userProfile, isExpired } = useAuth();
@@ -19,7 +26,11 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
   const [date, setDate] = useState(todayStr);
   const [shift, setShift] = useState<'Almoço' | 'Janta' | 'Lanche' | 'Ceia / Noturno'>('Almoço');
   const [location, setLocation] = useState('Frente de Lavra 01');
-  const [restaurant, setRestaurant] = useState(''); // ✅ Novo estado
+  
+  // Novo estado para restaurante
+  const [restaurantPreset, setRestaurantPreset] = useState<string>(PRESET_RESTAURANTS[0] || '');
+  const [customRestaurant, setCustomRestaurant] = useState('');
+  
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,36 +41,29 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
     setTitle(`${newShift} Terraplanagem - ${date}`);
   };
 
+  const handleRestaurantPresetChange = (value: string) => {
+    setRestaurantPreset(value);
+    if (value !== 'outro') {
+      setCustomRestaurant(''); // limpa o custom
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
-<<<<<<< Updated upstream
-  e.preventDefault();
-  if (totalMarmitas === 0) return;
-
-  setIsSubmitting(true);
-
-  try {
-    // Salva localmente e dispara sincronização em background
-    const savedList = await saveMealList(title, date, shift, location, notes);
-    
-    // Limpa as quantidades
-    resetAllQuantities();
-    
-    // Fecha o modal e abre o histórico
-    onSavedSuccess();
-    onClose();
-    
-    // Se estiver offline, mostra aviso rápido
-    if (!navigator.onLine) {
-      alert('Lista salva offline! Será sincronizada quando houver conexão.');
-=======
     e.preventDefault();
     if (totalMarmitas === 0) return;
+
+    // Determina o valor final do restaurante
+    let finalRestaurant = '';
+    if (restaurantPreset === 'outro') {
+      finalRestaurant = customRestaurant.trim();
+    } else {
+      finalRestaurant = restaurantPreset;
+    }
 
     setIsSubmitting(true);
 
     try {
-      // ✅ Passa o restaurante como argumento
-      await saveMealList(title, date, shift, location, notes, restaurant);
+      await saveMealList(title, date, shift, location, notes, finalRestaurant);
       resetAllQuantities();
       onSavedSuccess();
       onClose();
@@ -70,14 +74,8 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
       alert('Erro ao salvar lista: ' + (err as Error).message);
     } finally {
       setIsSubmitting(false);
->>>>>>> Stashed changes
     }
-  } catch (err) {
-    alert('Erro ao salvar lista: ' + (err as Error).message);
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+  };
 
   const itemsCount = Object.keys(currentQuantities).length;
 
@@ -174,14 +172,26 @@ export const SaveListModal: React.FC<SaveListModalProps> = ({ isOpen, onClose, o
               </label>
               <div className="relative">
                 <Store className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <select
+                  value={restaurantPreset}
+                  onChange={(e) => handleRestaurantPresetChange(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                >
+                  {PRESET_RESTAURANTS.map((name) => (
+                    <option key={name} value={name}>{name}</option>
+                  ))}
+                  <option value="outro">Outro...</option>
+                </select>
+              </div>
+              {restaurantPreset === 'outro' && (
                 <input
                   type="text"
-                  value={restaurant}
-                  onChange={(e) => setRestaurant(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                  placeholder="Ex: Marmitaria do Zé"
+                  value={customRestaurant}
+                  onChange={(e) => setCustomRestaurant(e.target.value)}
+                  placeholder="Digite o nome do restaurante"
+                  className="mt-2 w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
-              </div>
+              )}
             </div>
 
             <div>

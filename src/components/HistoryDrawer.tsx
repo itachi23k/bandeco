@@ -27,11 +27,7 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
   onSelectMealList
 }) => {
   const { 
-<<<<<<< Updated upstream
-    mealLists,  // ← Já vem filtrado do MealContext
-=======
     mealLists,
->>>>>>> Stashed changes
     deleteMealList
   } = useMeal();
 
