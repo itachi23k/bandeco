@@ -274,10 +274,20 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentQuantities(nextQuantities);
   };
 
-  // Add Worker
-  const addWorker = async (name: string, sector: string) => {
+  
+  // Add Worker com verificação prévia e garantia offline
+  const addWorker = async (name: string, sector: string): Promise<void> => {
     const trimmedName = name.trim();
     if (!trimmedName) return;
+
+    // 1. Evita duplicados antes de disparar operações
+    const alreadyExists = workers.some(
+      w => w.name.toLowerCase().trim() === trimmedName.toLowerCase()
+    );
+    if (alreadyExists) {
+      console.warn(`Consumidor "${trimmedName}" já está cadastrado.`);
+      return;
+    }
 
     const newWorker: Worker = {
       id: 'w-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
@@ -287,20 +297,20 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
       createdAt: new Date().toISOString()
     };
 
-    setWorkers((prev) => {
-      const exists = prev.some(w => w.name.toLowerCase() === trimmedName.toLowerCase());
-      if (exists) return prev;
-      return [...prev, newWorker].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
-    });
+      // 2. Atualiza estado React na hora (Optimistic UI)
+    setWorkers((prev) => 
+        [...prev, newWorker].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
+    );
 
-    if (currentUser) {
+    // 3. Persiste no Firestore / Cache IndexedDB do Firebase
+     if (currentUser) {
       try {
         const workerRef = doc(db, 'workers', newWorker.id);
         await setDoc(workerRef, newWorker);
       } catch (err) {
-        console.warn('Worker saved locally (Firestore offline):', err);
+        console.warn('Worker persistido em cache local offline:', err);
       }
-    }
+   }
   };
 
   const updateWorker = async (id: string, name: string, sector: string) => {
